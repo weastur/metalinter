@@ -28,6 +28,23 @@ steps:
   commands:
   - docker run --rm -v "$(pwd)":/app -w /app weastur/metalinter:latest ./test.sh
 
+- name: push
+  image: docker:20.10.17-dind
+  volumes:
+  - name: dockersock
+    path: /var/run
+  when:
+    branch:
+    - main
+    event:
+    - push
+    environment:
+      DOCKER_TOKEN:
+        from_secret: docker_token
+  commands:
+  - echo $DOCKER_TOKEN | docker login --username weastur --password-stdin
+  - docker push weastur/metalinter:latest
+
 services:
 - name: docker
   image: docker:20.10.17-dind
