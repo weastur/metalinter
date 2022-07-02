@@ -16,8 +16,9 @@ steps:
     image: weastur/metalinter
     commands:
       - hadolint Dockerfile
-      - shellcheck test.sh
+      - shellcheck *.sh
       - yamllint .
+      - markdownlint *.md
 
   - name: build
     image: docker:20.10.17-dind
