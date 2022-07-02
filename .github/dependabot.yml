@@ -1,0 +1,11 @@
+---
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: "/*"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies-update"
+    commit-message:
+      prefix: "[DOCKER]"
