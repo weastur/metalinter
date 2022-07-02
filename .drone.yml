@@ -4,58 +4,65 @@ type: docker
 name: default
 
 steps:
-- name: wait for docker
-  image: docker:20.10.17-dind
-  volumes:
-  - name: dockersock
-    path: /var/run
-  commands:
-  - while ! docker ps 2>&1 > /dev/null; do sleep 1; done
+  - name: wait for docker
+    image: docker:20.10.17-dind
+    volumes:
+      - name: dockersock
+        path: /var/run
+    commands:
+      - while ! docker ps 2>&1 > /dev/null; do sleep 1; done
 
-- name: build
-  image: docker:20.10.17-dind
-  volumes:
-  - name: dockersock
-    path: /var/run
-  commands:
-  - docker build --pull --rm -f "Dockerfile" -t weastur/metalinter:latest "."
+  - name: lint
+    image: weastur/metalinter
+    commands:
+      - hadolint Dockerfile
+      - shellcheck test.sh
+      - yamllint .
 
-- name: test
-  image: docker:20.10.17-dind
-  volumes:
-  - name: dockersock
-    path: /var/run
-  commands:
-  - docker run --rm -v "$(pwd)":/app -w /app weastur/metalinter:latest ./test.sh
+  - name: build
+    image: docker:20.10.17-dind
+    volumes:
+      - name: dockersock
+        path: /var/run
+    commands:
+      - docker build --pull --rm -f "Dockerfile" -t weastur/metalinter:latest "."
 
-- name: push
-  image: docker:20.10.17-dind
-  volumes:
-  - name: dockersock
-    path: /var/run
-  when:
-    branch:
-    - main
-    event:
-    - push
-  environment:
-    DOCKER_TOKEN:
-      from_secret: docker_token
-  commands:
-  - echo $DOCKER_TOKEN | docker login --username weastur --password-stdin
-  - docker push weastur/metalinter:latest
+  - name: test
+    image: docker:20.10.17-dind
+    volumes:
+      - name: dockersock
+        path: /var/run
+    commands:
+      - docker run --rm -v "$(pwd)":/app -w /app weastur/metalinter:latest ./test.sh
+
+  - name: push
+    image: docker:20.10.17-dind
+    volumes:
+      - name: dockersock
+        path: /var/run
+    when:
+      branch:
+        - main
+      event:
+        - push
+    environment:
+      DOCKER_TOKEN:
+        from_secret: docker_token
+    commands:
+      - echo $DOCKER_TOKEN | docker login --username weastur --password-stdin
+      - docker push weastur/metalinter:latest
 
 services:
-- name: docker
-  image: docker:20.10.17-dind
-  privileged: true
-  volumes:
-  - name: dockersock
-    path: /var/run
+  - name: docker
+    image: docker:20.10.17-dind
+    privileged: true
+    volumes:
+      - name: dockersock
+        path: /var/run
 
 volumes:
-- name: dockersock
-  temp: {}
+  - name: dockersock
+    temp: {}
 
 trigger:
   event:
