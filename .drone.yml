@@ -20,6 +20,14 @@ steps:
   commands:
   - docker build --pull --rm -f "Dockerfile" -t weastur/metalinter:latest "."
 
+- name: test
+  image: docker:20.10.17-dind
+  volumes:
+  - name: dockersock
+    path: /var/run
+  commands:
+  - ./run_tests.sh
+
 services:
 - name: docker
   image: docker:20.10.17-dind
