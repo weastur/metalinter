@@ -25,7 +25,14 @@ steps:
       - name: dockersock
         path: /var/run
     commands:
-      - docker build --pull --rm -f "Dockerfile" -t weastur/metalinter:latest "."
+      - date +'%Y%m%d' > current_date
+      - 'docker build
+        --pull
+        --rm
+        -f "Dockerfile"
+        -t weastur/metalinter:latest
+        -t weastur/metalinter:$(cat current_date)
+        "."'
 
   - name: test
     image: docker:20.10.17-dind
@@ -51,6 +58,7 @@ steps:
     commands:
       - echo $DOCKER_TOKEN | docker login --username weastur --password-stdin
       - docker push weastur/metalinter:latest
+      - docker push weastur/metalinter:$(cat current_date)
 
   - name: slack
     image: plugins/slack
