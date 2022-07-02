@@ -38,9 +38,9 @@ steps:
     - main
     event:
     - push
-    environment:
-      DOCKER_TOKEN:
-        from_secret: docker_token
+  environment:
+    DOCKER_TOKEN:
+      from_secret: docker_token
   commands:
   - echo $DOCKER_TOKEN | docker login --username weastur --password-stdin
   - docker push weastur/metalinter:latest
