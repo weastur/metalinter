@@ -52,6 +52,12 @@ steps:
       - echo $DOCKER_TOKEN | docker login --username weastur --password-stdin
       - docker push weastur/metalinter:latest
 
+  - name: slack
+    image: plugins/slack
+    settings:
+      webhook:
+        from_secret: slack_webhook
+
 services:
   - name: docker
     image: docker:20.10.17-dind
