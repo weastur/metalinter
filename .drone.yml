@@ -26,7 +26,7 @@ steps:
   - name: dockersock
     path: /var/run
   commands:
-  - ./run_tests.sh
+  - docker run --rm -v "$(pwd)":/app -w /app weastur/metalinter:latest ./test.sh
 
 services:
 - name: docker
