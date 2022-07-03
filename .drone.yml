@@ -20,6 +20,14 @@ steps:
       - yamllint .
       - markdownlint *.md
 
+  - name: ggshield
+    image: gitguardian/ggshield:latest
+    environment:
+      GITGUARDIAN_API_KEY:
+        from_secret: gitguardian_token
+    commands:
+      - ggshield secret scan ci
+
   - name: build
     image: docker:20.10.17-dind
     volumes:
