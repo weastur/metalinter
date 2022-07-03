@@ -1,0 +1,10 @@
+---
+addReviewers: true
+addAssignees: true
+reviewers:
+  - weastur
+skipKeywords:
+  - WIP
+numberOfReviewers: 0
+skipUsers:
+  - dependabot[bot]
