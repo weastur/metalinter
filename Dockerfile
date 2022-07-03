@@ -17,7 +17,7 @@ RUN git clone --depth 1 --branch 0.2.1 https://github.com/mrtazz/checkmake
 WORKDIR /go/checkmake
 RUN make
 
-FROM rust:1.61-bullseye as dotenv
+FROM rust:1.62.0-bullseye as dotenv
 
 RUN git clone --depth 1 --branch v3.2.0 https://github.com/dotenv-linter/dotenv-linter.git
 WORKDIR /dotenv-linter
