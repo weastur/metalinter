@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         shellcheck \
         npm \
         python3-pip \
-    && pip3 install --no-cache-dir sqlfluff \    
+    && pip3 install --no-cache-dir sqlfluff \
     && npm install -g markdownlint-cli \
     && npm install -g jsonlint \
     && rm -rf /var/lib/apt/lists/*

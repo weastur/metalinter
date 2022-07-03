@@ -4,6 +4,7 @@ yaml-files:
   - '.hadolint.yml'
   - '.drone.yml'
   - '.yamllint'
+  - '.pre-commit-config.yaml'
   - '.github/*.yml'
 rules:
   line-length:
