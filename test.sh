@@ -16,8 +16,8 @@ shellcheck ./tests/run.sh
 printf "success!\n\n"
 
 printf "test yamllint\n"
-yamllint ./tests/data.yml
-[ $? -eq 1 ] || { printf "failed!\n"; exit 1; }
+yamllint -s ./tests/data.yml
+[ $? -eq 2 ] || { printf "failed!\n"; exit 1; }
 printf "success!\n\n"
 
 printf "test markdownlint\n"
