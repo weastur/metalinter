@@ -4,6 +4,7 @@ yaml-files:
   - '.hadolint.yml'
   - '.drone.yml'
   - '.yamllint'
+  - '.mergify'
   - '.pre-commit-config.yaml'
   - '.github/*.yml'
 rules:

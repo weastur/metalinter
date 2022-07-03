@@ -1,0 +1,24 @@
+---
+pull_request_rules:
+  - name: Automatic merge on approval
+    conditions:
+      - "#approved-reviews-by>=1"
+      - "#review-requested=0"
+      - "#changes-requested-reviews-by=0"
+      - base=main
+      - label!=work-in-progress
+      - check-success=continuous-integration/drone/pr
+      - check-success=continuous-integration/drone/push
+      - check-success=GitGuardian Security Checks
+    actions:
+      merge:
+        method: merge
+  - name: automatic merge for Dependabot pull requests
+    conditions:
+      - label=dependencies-update
+      - check-success=continuous-integration/drone/pr
+      - check-success=continuous-integration/drone/push
+      - check-success=GitGuardian Security Checks
+    actions:
+      merge:
+        method: merge
