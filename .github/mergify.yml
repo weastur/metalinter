@@ -1,5 +1,22 @@
 ---
 pull_request_rules:
+  - name: assign PRs to weastur
+    actions:
+      assign:
+        add_users:
+          - weastur
+      request_reviews:
+        users:
+          - weastur
+  - name: automatic merge for Dependabot pull requests
+    conditions:
+      - label=dependencies-update
+      - check-success=continuous-integration/drone/pr
+      - check-success=continuous-integration/drone/push
+      - check-success=GitGuardian Security Checks
+    actions:
+      merge:
+        method: merge
   - name: Automatic merge on approval
     conditions:
       - "#approved-reviews-by>=1"
@@ -7,15 +24,6 @@ pull_request_rules:
       - "#changes-requested-reviews-by=0"
       - base=main
       - label!=work-in-progress
-      - check-success=continuous-integration/drone/pr
-      - check-success=continuous-integration/drone/push
-      - check-success=GitGuardian Security Checks
-    actions:
-      merge:
-        method: merge
-  - name: automatic merge for Dependabot pull requests
-    conditions:
-      - label=dependencies-update
       - check-success=continuous-integration/drone/pr
       - check-success=continuous-integration/drone/push
       - check-success=GitGuardian Security Checks
